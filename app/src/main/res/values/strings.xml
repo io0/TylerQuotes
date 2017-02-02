@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TylerQuotes2</string>
+    <string name="button_send">Quote</string>
+    <string name="edit_message">Enter Quote!</string>
+</resources>

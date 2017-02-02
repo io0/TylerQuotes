@@ -31,10 +31,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private List<Block> myBlocks = new ArrayList<>();
-    private List<String> keys = new ArrayList<>();
     Button quoteButton;
     EditText editQuote;
-    //Button blockButton;
 
     DatabaseReference tylerRef = FirebaseDatabase.getInstance().getReference("Tyler");
 
@@ -45,23 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
         quoteButton = (Button) findViewById(R.id.quote_button);
         editQuote = (EditText) findViewById(R.id.edit_quote);
-        Block block1 = new Block();
-        block1.setQuote("Tyler quotes are great");
-        block1.setDate("1998");
-        //myBlocks.add(new Block ("Why are you guys roasting me", "ongoing"));
-    }
-
-    protected void onStart(){
-        super.onStart();
         tylerRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                //days.clear();
-                //for (DataSnapshot ds: dataSnapshot.getChildren()) {
                 Block theBlock = dataSnapshot.getValue(Block.class);
                 myBlocks.add(theBlock);
                 initializeListView();
-                //}
             }
 
             @Override
@@ -84,6 +71,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    protected void onStart(){
+        super.onStart();
+
         quoteButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -94,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 theBlock.setScore(0);
                 DatabaseReference temp = tylerRef.push();
                 temp.setValue(theBlock);
-                keys.add(temp.getKey());
-                Log.d("key", temp.getKey());
                 editQuote.setText("");
             }
         });
@@ -125,16 +115,52 @@ public class MainActivity extends AppCompatActivity {
 
             TextView blockScore = (TextView) itemView.findViewById(R.id.block_score);
             blockScore.setText(Integer.toString(currentBlock.getScore()));
-            Button blockButton = (Button) itemView.findViewById(R.id.block_button);
+            Button blockUpvote = (Button) itemView.findViewById(R.id.block_upvote);
+            Button blockDownvote = (Button) itemView.findViewById(R.id.block_downvote);
             //Access the respective score field
             //itemView.setTag(blockScore);
             //final TextView temp = (TextView) itemView.getTag();
 
-            blockButton.setOnClickListener(new View.OnClickListener(){
+            blockUpvote.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view){
                     currentBlock.setScore(currentBlock.getScore()+1);
-                    tylerRef.child(keys.get(position)).setValue(currentBlock);
+                    Query query = tylerRef.orderByChild("quote").equalTo(currentBlock.getQuote());
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                            String key = nodeDataSnapshot.getKey();
+                            tylerRef.child(key).setValue(currentBlock);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    initializeListView();
+                }
+            });
+
+            blockDownvote.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    currentBlock.setScore(currentBlock.getScore()-1);
+                    Query query = tylerRef.orderByChild("quote").equalTo(currentBlock.getQuote());
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                            String key = nodeDataSnapshot.getKey();
+                            tylerRef.child(key).setValue(currentBlock);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     initializeListView();
                 }
             });
@@ -145,8 +171,8 @@ public class MainActivity extends AppCompatActivity {
             TextView date = (TextView) itemView.findViewById(R.id.block_date);
             date.setText(currentBlock.getDate());
 
-            //Garamond
-            Typeface type = Typeface.createFromAsset(getAssets(), "fonts/GARA.TTF");
+            //Bookman Old Style
+            Typeface type = Typeface.createFromAsset(getAssets(), "fonts/BOOKOS.TTF");
             quote.setTypeface(type);
             date.setTypeface(type);
 

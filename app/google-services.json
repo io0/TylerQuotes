@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "599955854177",
+    "firebase_url": "https://tylerquotes2.firebaseio.com",
+    "project_id": "tylerquotes2",
+    "storage_bucket": "tylerquotes2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599955854177:android:2b6a4691cef518bb",
+        "android_client_info": {
+          "package_name": "com.marleybob.tylerquotes2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599955854177-smqamjq087v8o41fdf4dume25nnv0p1a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marleybob.tylerquotes2",
+            "certificate_hash": "58ECBDD56C6387DF5A238B0B893B671D9AB65085"
+          }
+        },
+        {
+          "client_id": "599955854177-ups0kclk8l3fk0uvl4p2l7r2mbqg11gm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOMWa0cw7QtjDuD8FmVrr8jnQrNf6k7MM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599955854177-ups0kclk8l3fk0uvl4p2l7r2mbqg11gm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
